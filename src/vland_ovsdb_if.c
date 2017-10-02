@@ -157,10 +157,10 @@ l2vlan_diag_dump_callback(const char *feature , char **buf)
 
     *buf = xcalloc(1, ds.length);
     if (*buf) {
-        VLOG_INFO("diag-dump ds.length = %lu", ds.length);
+        VLOG_INFO("diag-dump ds.length = %zu", ds.length);
         snprintf(*buf, ds.length, "%s", ds_cstr(&ds));
     } else {
-        VLOG_ERR("Memory allocation failed for feature %s , %lu bytes",
+        VLOG_ERR("Memory allocation failed for feature %s , %zu bytes",
                 feature , ds.length);
     }
     ds_destroy(&ds);

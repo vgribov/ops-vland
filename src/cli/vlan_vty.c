@@ -26,6 +26,8 @@
  * shoi vlan internal
  ***************************************************************************/
 
+#include <inttypes.h>
+
 #include "vtysh/zebra.h"
 #include "vtysh/command.h"
 #include "vtysh/vty.h"
@@ -278,7 +280,7 @@ DEFUN(vtysh_vlan,
     {
         /* Check for internal VLAN.
          * No configuration is allowed on internal VLANs. */
-        vty_out(vty, "VLAN%ld is used as an internal VLAN. "
+        vty_out(vty, "VLAN%" PRIi64 " is used as an internal VLAN. "
                 "No further configuration allowed.%s", vlan_row->id, VTY_NEWLINE);
         return CMD_SUCCESS;
     }
@@ -405,7 +407,7 @@ DEFUN(vtysh_no_vlan,
         {
             /* Check for internal VLAN.
              * No deletion is allowed on internal VLANs. */
-            vty_out(vty, "VLAN%ld is used as an internal VLAN. "
+            vty_out(vty, "VLAN%" PRIi64 " is used as an internal VLAN. "
                     "Deletion not allowed.%s", vlan_row->id, VTY_NEWLINE);
             return CMD_SUCCESS;
         }
@@ -416,7 +418,7 @@ DEFUN(vtysh_no_vlan,
         {
             /* Check for inteface VLAN.
              * L2 VLAN deletion is allowed if interface VLAN exists */
-            vty_out(vty, "VLAN%ld is used as an interface VLAN. "
+            vty_out(vty, "VLAN%" PRIi64 " is used as an interface VLAN. "
                     "Deletion not allowed.%s", vlan_row->id, VTY_NEWLINE);
             vty->node = CONFIG_NODE;
             return CMD_ERR_NOTHING_TODO;
@@ -2741,7 +2743,7 @@ DEFUN(cli_show_vlan,
 
     OVSREC_VLAN_FOR_EACH(vlan_row, idl)
     {
-        sprintf(str, "%ld", vlan_row->id);
+        sprintf(str, "%" PRIi64, vlan_row->id);
         shash_add(&sorted_vlan_id, str, (void *)vlan_row);
     }
 
@@ -2760,7 +2762,7 @@ DEFUN(cli_show_vlan,
         struct ovsrec_port **port_nodes = NULL;
         int n = 0;
         char vlan_id[5] = { 0 };
-        snprintf(vlan_id, 5, "%ld", vlan_row->id);
+        snprintf(vlan_id, 5, "%" PRIi64, vlan_row->id);
         vty_out(vty, "%-8s", vlan_id);
         vty_out(vty, "%-16s", vlan_row->name);
         vty_out(vty, "%-9s", vlan_row->oper_state);

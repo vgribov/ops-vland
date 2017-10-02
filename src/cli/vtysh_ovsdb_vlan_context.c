@@ -53,7 +53,7 @@ vtysh_vlan_context_init(void *p_private)
 
    OVSREC_VLAN_FOR_EACH(vlan_row, p_msg->idl)
    {
-       snprintf(vlan_id_str, VLAN_ID_LEN, "%ld", vlan_row->id);
+       snprintf(vlan_id_str, VLAN_ID_LEN, "%" PRIi64, vlan_row->id);
        shash_add(&sorted_vlan_id, vlan_id_str, (void *)vlan_row);
    }
 
